@@ -40,58 +40,20 @@ function logar(){
   promessa.then(entrarNaSala);
   promessa.catch(erroLogin);
 }
-
-/*
-function validarNome(resposta){
-  let nomeValido = true;
-  const listaUsuarios = resposta.data;
-  const mensagem = document.querySelector(".error");
-  console.log(listaUsuarios);
-
-  for (let i = 0; i < listaUsuarios.length; i++){
-    if (listaUsuarios[i].name.toLowerCase() === nome.toLowerCase()){
-      nomeValido = false;
-    }
-  }
-
-  if (nomeValido) {
-    //Entra na sala
-    mensagem.classList.add("hidden");
-    document.querySelector(".login-screen").classList.add("hidden");
-    setTimeout(entrarNaSala, 500);
-  }
-  else {
-    // Mostra mensagem: "O nome ${nome} já está em uso, por favor digite outro nome"
-    document.querySelector(".login-screen input").style.backgroundColor = "rgb(255, 216, 216)";
-    mensagem.innerHTML = `O nome ${nome} já está em uso! <br> Por favor digite outro nome`;
-    mensagem.classList.remove("hidden");
-  }
-}
-*/
-
 function entrarNaSala(resposta){
   mensagem.classList.add("hidden");
   document.querySelector(".login-screen").classList.add("hidden");
   // setTimeout(exibirMensagens, 500);
   botaoAtivo = document.querySelector(".botaoEnviar");
   inputAtivo = document.querySelector(".mensage-input input");
-  const parar = setInterval(carregarMensagens, 3000);
+  const pararMensagens = setInterval(carregarMensagens, 3000);
+  const deslogar = setInterval(manterConexao, 5000);
   carregarMensagens();
 }
-
-/*
-function loginUsuario(resposta){
-  console.log(resposta);
-  const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
-  promessa.then(exibirMensagens);
-}
-*/
-
 function carregarMensagens(){
   const promesssa = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
   promesssa.then(exibirMensagens); 
 }
-
 function exibirMensagens(resposta){
   const listaMensagens = resposta.data;
   const chat = document.querySelector(".chat");
@@ -130,7 +92,10 @@ function exibirMensagens(resposta){
   }
   document.querySelector(".chat").scrollIntoView(false, {block: "end"});
 }
-
+function manterConexao(){
+  let usuario = {name: nome};
+  const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', usuario);
+}
 function erroLogin(erro){
   if (erro.response.status === 400){
     document.querySelector(".login-screen input").style.backgroundColor = "rgb(255, 216, 216)";
@@ -138,7 +103,6 @@ function erroLogin(erro){
     mensagem.classList.remove("hidden");
   }
 }
-
 function abrirSidebar(){
   document.querySelector(".users-list").classList.remove("hidden");
   // setTimeout(function(){document.querySelector(".users-list").classList.add("hidden");}, 5000);
