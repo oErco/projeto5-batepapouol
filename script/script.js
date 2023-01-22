@@ -68,7 +68,7 @@ function exibirMensagens(resposta){
   let mensagem;
   for (let i = 0; i < listaMensagens.length; i++){
     if (listaMensagens[i].type === "status"){
-      mensagem = `<li class="log"> 
+      mensagem = `<li data-test="message" class="log"> 
                     <p> <span class="time">(${listaMensagens[i].time})</span>
                     <span class="author">${listaMensagens[i].from}</span>
                     <span class="message-text">${listaMensagens[i].text}</span></p>
@@ -76,7 +76,7 @@ function exibirMensagens(resposta){
       chat.innerHTML = chat.innerHTML + mensagem;
     }
     if (listaMensagens[i].type === "message"){
-      mensagem = `<li class="public message"> 
+      mensagem = `<li data-test="message" class="public message"> 
                     <p> <span class="time">(${listaMensagens[i].time})</span>
                     <span class="author">${listaMensagens[i].from}</span>
                     para
@@ -86,7 +86,7 @@ function exibirMensagens(resposta){
       chat.innerHTML = chat.innerHTML + mensagem;
     }
     if (listaMensagens[i].type === "private_message" && (listaMensagens[i].from.toLowerCase().trim() === nome.toLowerCase().trim() || listaMensagens[i].to.toLowerCase().trim() === nome.toLowerCase().trim())){
-      mensagem = `<li class="private message"> 
+      mensagem = `<li data-test="message" class="private message"> 
                     <p> <span class="time">(${listaMensagens[i].time})</span>
                     <span class="author">${listaMensagens[i].from}</span>
                     <span class="privately">reservadamente</span>
@@ -159,21 +159,21 @@ function mostrarParticipantes(){
 
     if (destinatario.toLowerCase().trim() === usuarios[i].toLowerCase().trim()){
       if (destinatario.toLowerCase().trim() === "todos"){
-        mensagem = `<li class="user-message destinatario" onclick="escolheDestinatario(this);"> 
+        mensagem = `<li data-test="all" class="user-message destinatario" onclick="escolheDestinatario(this);"> 
                       <div>
                           <ion-icon name="people"></ion-icon>
                           <p> Todos </p>
                       </div>
-                      <img src="./img/checkmark.png" alt="Checkmark">
+                      <img data-test="check" src="./img/checkmark.png" alt="Checkmark">
                     </li>`;
       }
       else {
-        mensagem = `<li class="user-message destinatario" onclick="escolheDestinatario(this);"> 
+        mensagem = `<li data-test="participant" class="user-message destinatario" onclick="escolheDestinatario(this);"> 
                     <div>
                         <ion-icon name="person-circle"></ion-icon>
                         <p> ${usuarios[i]} </p>
                     </div>
-                    <img src="./img/checkmark.png" alt="Checkmark">
+                    <img data-test="check" src="./img/checkmark.png" alt="Checkmark">
                   </li>`;
       }
     }
@@ -181,21 +181,21 @@ function mostrarParticipantes(){
     else {
 
       if (usuarios[i].toLowerCase().trim() === "todos"){
-        mensagem = `<li class="user-message" onclick="escolheDestinatario(this);"> 
+        mensagem = `<li data-test="all" class="user-message" onclick="escolheDestinatario(this);"> 
                       <div>
                           <ion-icon name="people"></ion-icon>
                           <p> Todos </p>
                       </div>
-                      <img src="./img/checkmark.png" alt="Checkmark" class="hidden">
+                      <img data-test="check" src="./img/checkmark.png" alt="Checkmark" class="hidden">
                     </li>`;
       }
       else {
-        mensagem = `<li class="user-message" onclick="escolheDestinatario(this);"> 
+        mensagem = `<li data-test="participant" class="user-message" onclick="escolheDestinatario(this);"> 
                       <div>
                           <ion-icon name="person-circle"></ion-icon>
                           <p> ${usuarios[i]} </p>
                       </div>
-                      <img src="./img/checkmark.png" alt="Checkmark" class="hidden">
+                      <img data-test="check" src="./img/checkmark.png" alt="Checkmark" class="hidden">
                     </li>`;
       }
     }

@@ -19,8 +19,8 @@
 
     <div class="login-screen">
         <img class="logo" src="./img/bate-papo.png" alt="Logo">
-        <input onclick="resetInput(this);" oninput="ativarBotao(this);" type="text" placeholder="Digite o seu nome" autocomplete="off">
-        <button class="login-Button" onclick="logar();" disabled> Entrar </button>
+        <input data-test="input-name" onclick="resetInput(this);" oninput="ativarBotao(this);" type="text" placeholder="Digite o seu nome" autocomplete="off">
+        <button data-test="send-name" class="login-Button" onclick="logar();" disabled> Entrar </button>
     </div>
 
     <span class="error hidden">  </span>
@@ -35,7 +35,7 @@
 
         <header>
             <img src="./img/bate-papo.png">
-            <ion-icon onclick="abrirSidebar()" name="people"></ion-icon>
+            <ion-icon data-test="open-participants" onclick="abrirSidebar()" name="people"></ion-icon>
         </header>
 
         <ul class="chat">
@@ -57,23 +57,23 @@
                 </div>
     
                 <ul>
-                    <li class="privacy publica" onclick="statusPrivacidade(this);"> 
+                    <li data-test="public" class="privacy publica" onclick="statusPrivacidade(this);"> 
                         <div>
                             <ion-icon name="lock-open"></ion-icon>
                             <p> Público </p>
                         </div>
-                        <img src="./img/checkmark.png" alt="Checkmark">
+                        <img data-test="check" src="./img/checkmark.png" alt="Checkmark">
                     </li>
-                    <li class="privacy privada" onclick="statusPrivacidade(this);"> 
+                    <li data-test="private" class="privacy privada" onclick="statusPrivacidade(this);"> 
                         <div>
                             <ion-icon name="lock-closed"></ion-icon>
                             <p> Reservadamente </p>
                         </div>
-                        <img class="hidden" src="./img/checkmark.png" alt="Checkmark">
+                        <img data-test="check" class="hidden" src="./img/checkmark.png" alt="Checkmark">
                     </li>    
                 </ul>    
             </div>             
-            <div class="back-aside" onclick="fecharSidebar()">
+            <div data-test="overlay" class="back-aside" onclick="fecharSidebar()">
                 <img src="./img/close.png" alt="">
             </div> 
       
@@ -81,10 +81,10 @@
     
         <footer>
             <div class="message-input"> 
-                <input type="text" placeholder="Escreva aqui...">
-                <p> </p>
+                <input data-test="input-message" type="text" placeholder="Escreva aqui...">
+                <p data-test="recipient"> </p>
             </div>
-            <ion-icon class="botaoEnviar" name="paper-plane-outline" onclick="enviarMensagem();"></ion-icon>      
+            <ion-icon data-test="send-message" class="botaoEnviar" name="paper-plane-outline" onclick="enviarMensagem();"></ion-icon>      
         </footer>
 
     </div>    
