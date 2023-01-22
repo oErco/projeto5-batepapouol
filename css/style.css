@@ -87,6 +87,10 @@ header ion-icon {
     background-color: #FFDEDE;
 }
 
+.privacy, .user-message {
+    cursor: pointer;
+}
+
 footer {
     bottom: 0;
 }
@@ -94,7 +98,7 @@ footer {
 footer p {
     color: #505050;
     font-size: 14px;
-    margin: 10px 0 0 3px;
+    margin: 10px 0 0 1px;
 }
 
 
@@ -111,17 +115,20 @@ footer input {
 
 footer ion-icon {
     font-size: 26px;
+    cursor: pointer;
 }
 
-.mensage-input {
+.message-input {
     width: calc(95% - 26px);
 }
 
-.mensage-input p {
-    display: none;
+.users-list img {
+    width: 10px;
+    height: 10px;
+    margin-left: 10px;
 }
 
-.users-list {
+.front-aside {
     width: 259px;
     height: 100vh;
     background-color: #FFFFFF;
@@ -130,10 +137,32 @@ footer ion-icon {
     position: fixed;
     top: 0;
     right: calc(50% - 187.5px);
-    box-shadow: -116px 0 0 0 rgba(0, 0, 0, 0.6);
-    z-index: 2;
+    /* box-shadow: -116px 0 0 0 rgba(0, 0, 0, 0.6); */
     padding: 0 20px 0 20px;
     font-size: 16px;
+    z-index: 3;
+    overflow-y: scroll;
+    padding-bottom: 80px;
+}
+
+.back-aside {
+    width: 375px;
+    height: 100vh;
+    background-color: #000000;
+    opacity: 0.6;
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: calc(50% - 187.5px);
+    z-index: 2;
+}
+
+.back-aside img {
+    width: 45px;
+    height: 45px;
+    margin-top: 13px;
+    margin-left: 22px;
+    opacity: 1;
 }
 
 .titulo {
@@ -157,6 +186,7 @@ footer ion-icon {
 
 li div {
     display: flex;
+    align-items: center;
 }
 
 .users-list h2 {
@@ -165,18 +195,14 @@ li div {
     text-align: center;
 }
 
-.users-list img {
-    width: 10px;
-    height: 10px;
-    margin-left: 10px;
-}
-
 .subtitulo {
     height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
+
 
 .privacy ion-icon {
     font-size: 20px;
@@ -238,13 +264,13 @@ li div {
 
 
 .error {
-    width: 40vw;
+    width: 250px;
     line-height: 20px;
     text-align: center;
     color: rgb(196, 0, 0);
     position: fixed;
     top: 205px;
-    left: calc(50% - 20vw);
+    left: calc(50% - 125px);
     z-index: 2;
 }
 
@@ -269,6 +295,7 @@ li div {
 
 .habilitado {
     font-weight: bold;
+    cursor: pointer;
 }
 
 .hidden {
@@ -280,22 +307,22 @@ li div {
 
 
 @media (max-width: 450px){
-    header, footer, .chat, .container, .login-screen{
+    header, footer, .chat, .container, .login-screen, .back-aside {
         width: 100%;
         left: 0;
     }
-
+    .front-aside {
+        right: 0;
+    }
     .users-list {
         right: 0;
-        box-shadow: -191px 0 0 0 rgba(0, 0, 0, 0.6);
     }
 }
 
 
 @media (max-width: 300px){
 
-    .users-list {
+    .front-aside {
         width: 70vw;
-        box-shadow: -100px 0 0 0 rgba(0, 0, 0, 0.6);
     }
 }

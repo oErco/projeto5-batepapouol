@@ -39,99 +39,52 @@
         </header>
 
         <ul class="chat">
-<!--
-            <li class="log"> 
-                <p> <span class="time">(09:21:45)</span>
-                <span class="author">João</span>
-                <span class="message-text">entra na sala...</span></p>
-            </li> 
-            <li class="public message"> 
-                <p> <span class="time">(09:22:28)</span> 
-                <span class="author">João</span>
-                para
-                <span class="receiver">Todos</span>: 
-                <span class="message-text">Bom dia</span></p>
-            </li> 
-            <li class="public message"> 
-                <p> <span class="time">(09:22:38)</span> 
-                <span class="author">Maria</span>  
-                para
-                <span class="receiver">João</span>: 
-                <span class="message-text">Oi João :)</span></p>
-            </li> 
-            <li class="private message"> 
-                <p> <span class="time">(09:22:48)</span> 
-                <span class="author">João</span>  
-                <span class="privately">reservadamente</span>
-                para
-                <span class="receiver">Maria</span>: 
-                <span class="message-text">Oi gatinha quer tc?</span></p>
-            </li>
-            <li class="log"> 
-                <p> <span class="time">(09:22:58)</span>
-                <span class="author">Maria</span>
-                <span class="message-text">sai da sala...</span></p>
-            </li>   
--->
+
         </ul>
 
         <aside class="users-list hidden">
 
-            <div class="titulo">    
-                <h2> Escolha um contato para enviar mensagem: </h2>
-            </div>   
-            <ul>
-                <li class="user-message"> 
-                    <div>
-                        <ion-icon name="people"></ion-icon>
-                        <p> Todos </p>
-                    </div>
-                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
-                </li>
-                <li class="user-message"> 
-                    <div>
-                        <ion-icon name="person-circle"></ion-icon>
-                        <p> João </p>
-                    </div>
-                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
-                </li>
-                <li class="user-message"> 
-                    <div>
-                        <ion-icon name="person-circle"></ion-icon>
-                        <p> Maria </p>
-                    </div>
-                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
-                </li>
-            </ul>
-
-            <div class="subtitulo">
-                <h2> Escolha a visibilidade </h2>
-            </div>
-
-            <ul>
-                <li class="privacy"> 
-                    <div>
-                        <ion-icon name="lock-open"></ion-icon>
-                        <p> Público </p>
-                    </div>
-                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
-                </li>
-                <li class="privacy"> 
-                    <div>
-                        <ion-icon name="lock-closed"></ion-icon>
-                        <p> Reservadamente </p>
-                    </div>
-                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
-                </li>    
-            </ul>
+            <div class="front-aside">
+                <div class="titulo">    
+                    <h2> Escolha um contato para enviar mensagem: </h2>
+                </div>   
+                <ul class="users">
+                
+                </ul>
+    
+                <div class="subtitulo">
+                    <h2> Escolha a visibilidade </h2>
+                </div>
+    
+                <ul>
+                    <li class="privacy publica" onclick="statusPrivacidade(this);"> 
+                        <div>
+                            <ion-icon name="lock-open"></ion-icon>
+                            <p> Público </p>
+                        </div>
+                        <img src="./img/checkmark.png" alt="Checkmark">
+                    </li>
+                    <li class="privacy privada" onclick="statusPrivacidade(this);"> 
+                        <div>
+                            <ion-icon name="lock-closed"></ion-icon>
+                            <p> Reservadamente </p>
+                        </div>
+                        <img class="hidden" src="./img/checkmark.png" alt="Checkmark">
+                    </li>    
+                </ul>    
+            </div>             
+            <div class="back-aside" onclick="fecharSidebar()">
+                <img src="./img/close.png" alt="">
+            </div> 
+      
         </aside> 
-
+    
         <footer>
-            <div class="mensage-input"> 
+            <div class="message-input"> 
                 <input type="text" placeholder="Escreva aqui...">
-                <p> Enviando para <span class="receiver-selected"> Maria </span> (<span class="privacy-selected">reservadamente</span>)</p>
+                <p> </p>
             </div>
-            <ion-icon class="botaoEnviar" name="paper-plane-outline"></ion-icon>      
+            <ion-icon class="botaoEnviar" name="paper-plane-outline" onclick="enviarMensagem();"></ion-icon>      
         </footer>
 
     </div>    

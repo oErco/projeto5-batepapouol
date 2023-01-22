@@ -2,7 +2,12 @@ let botaoAtivo = document.querySelector(".login-Button");
 let inputAtivo = document.querySelector(".login-screen input");
 const mensagem = document.querySelector(".error");
 let nome; 
+let usuarios = ["Todos"];
+let privacidade = "message";
+let destinatario = "Todos";
+let textoPrivacidade ="";
 
+configuraTextoPrivacidade();
 document.addEventListener("keypress", clicaEnter);
 
 function clicaEnter(tecla){
@@ -33,7 +38,7 @@ function logar(){
   let usuario = {name: nome};
   const loading = document.querySelector(".loading");
   loading.classList.remove("hidden");
-  setTimeout(function(){document.querySelector(".loading").classList.add("hidden");}, 1500);
+  setTimeout(function(){document.querySelector(".loading").classList.add("hidden");}, 2000);
   //const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
   //promessa.then(validarNome);
   const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', usuario);
@@ -41,14 +46,16 @@ function logar(){
   promessa.catch(erroLogin);
 }
 function entrarNaSala(resposta){
+  document.querySelector("footer input").value = "";
   mensagem.classList.add("hidden");
   document.querySelector(".login-screen").classList.add("hidden");
-  // setTimeout(exibirMensagens, 500);
   botaoAtivo = document.querySelector(".botaoEnviar");
-  inputAtivo = document.querySelector(".mensage-input input");
+  inputAtivo = document.querySelector(".message-input input");
   const pararMensagens = setInterval(carregarMensagens, 3000);
   const deslogar = setInterval(manterConexao, 5000);
+  setInterval(carregarParticipantes, 10000);
   carregarMensagens();
+  carregarParticipantes();
 }
 function carregarMensagens(){
   const promesssa = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
@@ -78,7 +85,7 @@ function exibirMensagens(resposta){
                   </li> `;
       chat.innerHTML = chat.innerHTML + mensagem;
     }
-    if (listaMensagens[i].type === "private_message" && (listaMensagens[i].from === nome || listaMensagens[i].to === nome)){
+    if (listaMensagens[i].type === "private_message" && (listaMensagens[i].from.toLowerCase().trim() === nome.toLowerCase().trim() || listaMensagens[i].to.toLowerCase().trim() === nome.toLowerCase().trim())){
       mensagem = `<li class="private message"> 
                     <p> <span class="time">(${listaMensagens[i].time})</span>
                     <span class="author">${listaMensagens[i].from}</span>
@@ -90,7 +97,7 @@ function exibirMensagens(resposta){
       chat.innerHTML = chat.innerHTML + mensagem;
     }    
   }
-  document.querySelector(".chat").scrollIntoView(false, {block: "end"});
+  document.querySelector(".chat").scrollIntoView(false);
 }
 function manterConexao(){
   let usuario = {name: nome};
@@ -104,51 +111,155 @@ function erroLogin(erro){
   }
 }
 function abrirSidebar(){
+  document.querySelector(".titulo").scrollIntoView(true);
   document.querySelector(".users-list").classList.remove("hidden");
-  // setTimeout(function(){document.querySelector(".users-list").classList.add("hidden");}, 5000);
+}
+function fecharSidebar(){
+  document.querySelector(".users-list").classList.add("hidden");
+}
+function carregarParticipantes (){
+  const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+  promessa.then(verificarUsuarios);
+}
+function verificarUsuarios(resposta){
+  const listaUsuariosServidor = resposta.data;
+  const listaNomes = [];
+
+  // Compara a lista usuarios e os elementos (.name) de listaUsuariosServidor
+  // Se o elemento já existe em usuários, não faz nada
+  // Se o elemento não existe em usuários, acrescenta no final da lista
+
+  for (let i = 0; i < listaUsuariosServidor.length; i++){
+    listaNomes.push(listaUsuariosServidor[i].name);
+    const jaExiste = usuarios.find(elemento => elemento.toLowerCase() === listaUsuariosServidor[i].name.toLowerCase());
+    if (jaExiste === undefined){
+      usuarios.push(listaUsuariosServidor[i].name);
+    }
+  }
+
+  // Remover os elementos de usuários que não estão na lista atual de nome (listaNomes)
+  for (let i = 0; i < usuarios.length; i++){
+    const userOnline = listaNomes.find(elemento => elemento.toLowerCase() === usuarios[i].toLowerCase());
+    if (userOnline === undefined && usuarios[i] !== "Todos"){
+      usuarios.splice(i, 1);
+    }
+  }
+
+  mostrarParticipantes();
+}
+function mostrarParticipantes(){
+  const listaUsers = document.querySelector(".users");
+  let mensagem;
+  // Verifica se elemento.nome é igual a destinatario 
+  // Se sim renderiza com img sem o hidden
+  // Se não resnderiza com o img hidden
+  listaUsers.innerHTML = "";
+
+  for (let i = 0; i < usuarios.length; i++){
+
+    if (destinatario.toLowerCase().trim() === usuarios[i].toLowerCase().trim()){
+      if (destinatario.toLowerCase().trim() === "todos"){
+        mensagem = `<li class="user-message destinatario" onclick="escolheDestinatario(this);"> 
+                      <div>
+                          <ion-icon name="people"></ion-icon>
+                          <p> Todos </p>
+                      </div>
+                      <img src="./img/checkmark.png" alt="Checkmark">
+                    </li>`;
+      }
+      else {
+        mensagem = `<li class="user-message destinatario" onclick="escolheDestinatario(this);"> 
+                    <div>
+                        <ion-icon name="person-circle"></ion-icon>
+                        <p> ${usuarios[i]} </p>
+                    </div>
+                    <img src="./img/checkmark.png" alt="Checkmark">
+                  </li>`;
+      }
+    }
+
+    else {
+
+      if (usuarios[i].toLowerCase().trim() === "todos"){
+        mensagem = `<li class="user-message" onclick="escolheDestinatario(this);"> 
+                      <div>
+                          <ion-icon name="people"></ion-icon>
+                          <p> Todos </p>
+                      </div>
+                      <img src="./img/checkmark.png" alt="Checkmark" class="hidden">
+                    </li>`;
+      }
+      else {
+        mensagem = `<li class="user-message" onclick="escolheDestinatario(this);"> 
+                      <div>
+                          <ion-icon name="person-circle"></ion-icon>
+                          <p> ${usuarios[i]} </p>
+                      </div>
+                      <img src="./img/checkmark.png" alt="Checkmark" class="hidden">
+                    </li>`;
+      }
+    }
+      
+    listaUsers.innerHTML = listaUsers.innerHTML + mensagem;
+  }
+}
+function statusPrivacidade(escolha){
+  if (escolha.classList.contains("publica")){
+    privacidade = "message";
+    document.querySelector(".privada img").classList.add("hidden");
+    document.querySelector(".publica img").classList.remove("hidden");
+  }
+  else if (escolha.classList.contains("privada") && destinatario.toLowerCase().trim() !== "todos"){
+    privacidade = "private_message";
+    document.querySelector(".publica img").classList.add("hidden");
+    document.querySelector(".privada img").classList.remove("hidden"); 
+  }
+  configuraTextoPrivacidade();
+}
+function escolheDestinatario(escolha){
+
+  let destinatarioAnterior = document.querySelector(".destinatario");
+
+  if (destinatarioAnterior !== null ){
+    destinatarioAnterior.classList.remove("destinatario");
+    destinatarioAnterior.children[1].classList.add("hidden");
+  }    
+
+  escolha.classList.add("destinatario");
+  destinatario = escolha.children[0].children[1].innerHTML;
+  escolha.children[1].classList.remove("hidden");
+
+  if (destinatario.toLowerCase().trim() === "todos"){
+    //Muda privacidade para público
+    privacidade = "message";
+    document.querySelector(".privada img").classList.add("hidden");
+    document.querySelector(".publica img").classList.remove("hidden");
+  }
+
+  configuraTextoPrivacidade();
+}
+function configuraTextoPrivacidade(){
+  let configMensagem = document.querySelector(".message-input p");
+
+  if (privacidade === "message"){
+    textoPrivacidade = "publicamente";
+  }
+  else {
+    textoPrivacidade = "reservadamente";
+  }
+  configMensagem.innerHTML = `<p>Enviando para <span class="receiver-selected"> ${destinatario} </span> (<span class="privacy-selected">${textoPrivacidade}</span>)</p>`;
+}
+function enviarMensagem(){
+  let texto = document.querySelector(".message-input input");
+  let mensagem = {from: nome, to: destinatario, text: texto.value, type: privacidade};
+  let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
+  texto.value = "";
+  promessa.then(carregarMensagens);
+  promessa.catch(erroMensagem);
+}
+function erroMensagem(resposta){
+  window.location.reload();
 }
 
-
-
-
-// Enviar o nome do usuário para o servidor para cadastro
-  // Caso tiver sucesso o usuário entra na sala e a página do chat é aberta
-  // Caso der erro, deve-se pedir para o usuário digitar outro nome, pois este já está em uso
-
-// carregar as mensagens do servidor
-
-// exibir as mensagens do servidor conforme layout fornecido
-
-  // As mensagens com Reservadamente só devem ser exibidas se o nome do destinatário ou remetente for igual ao nome do usuário que está usando o chat
-
-// A cada três segundos o site deve recarregar as mensagens do servidor
-
-// A cada 5 segundos o site deve avisar ao servidor que o usuário ainda está presente, ou senão será considerado que "Saiu da sala"
-
-// O chat deverá ter rolagem automática por padrão
-
-
-// Enviar mensagem para o servidor 
-
-  // Deve ser informado o remetente, o destinatário e se a mensagem é reservada ou não
-
-  // Caso de sucesso: obter novamente as mensagens do servidor e atualizar o chat
   
-  // Caso de erro: significa que esse usuário não está mais na sala e a página deve ser atualizada (e com isso voltando pra etapa de pedir o nome)
-
-
-// Bonus 
-
-  // Faça com que, caso o usuário tecle Enter no campo de mensagem, ela seja enviada
-
-  // Ao clicar no fundo escuro do sidebar o menu lateral deve ser ocultado novamente
-
-  // O site deve obter a lista de participantes assim que entra no chat e deve atualizar a lista a cada dez segundos
-
-  // Ao clicar em uma pessoa ou em público/reservadamente, a opção clicada deve ser marcada com um check e as demais desmarcadas
-
-  // Além do check acima, ao trocar esses parâmetros também deve ser alterada a frase que informa o destinatário, que fica embaixo do input de mensagem
-
-
-
-
+// Quebra de texto nas mensagens e nos usuários
