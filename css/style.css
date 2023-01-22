@@ -4,7 +4,7 @@
 
 body {
     background-color: #E5E5E5;
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
     font-size: 14px;
 }
 
@@ -45,10 +45,12 @@ header ion-icon {
 
 .chat {
     width: 375px;
-    margin: 106px auto 0 auto;
+    height: calc(100vh - 186px);
+    margin: 106px auto 85px auto;
+    overflow-y: scroll;
 }
 
-.chat div {
+.chat li {
     display: flex;
     display: flex;
     align-items: center;
@@ -65,12 +67,12 @@ header ion-icon {
 
 .time {
     color: #AAAAAA;
+    margin-right: 5px;
 }
 
 .author, .receiver {
     color: #000000;
     font-weight: bold;
-    margin-left: 10px;
 }
 
 .log {
@@ -123,7 +125,7 @@ footer ion-icon {
     width: 259px;
     height: 100vh;
     background-color: #FFFFFF;
-    display: none; /* flex */
+    display: flex;
     flex-direction: column;
     position: fixed;
     top: 0;
@@ -147,10 +149,14 @@ footer ion-icon {
     margin-right: 7px;
 }
 
-.users-list div {
+.users-list li {
     display: flex;
     align-items: center;
-    margin: 5px 0 5px 0;
+    margin: 15px 0 15px 0;
+}
+
+li div {
+    display: flex;
 }
 
 .users-list h2 {
@@ -184,7 +190,7 @@ footer ion-icon {
 .login-screen {
     width: 375px;
     height: 100vh;
-    display: none; /* flex */
+    display: flex; 
     flex-direction: column;
     align-items: center;
     background-color: #FFFFFF;
@@ -195,31 +201,83 @@ footer ion-icon {
 
 }
 
-.login-screen img {
+.logo {
     width: 130px;
     height: 92px;
     margin-top: 85px;
 }
 
 .login-screen input {
-    width: 261px;
-    height: 54px; 
+    min-width: 261px;
+    min-height: 54px; 
     margin-top: 85px;
     border: 1px solid #D7D7D7;
     border-radius: 4px;
-    color: #AEAEAE;
+    color: #000000;
     text-align: center;
 }
 
+.login-screen input:focus {
+    outline: 1px solid rgb(131, 131, 131);
+}
+
+.login-screen input::placeholder {
+    color: #AEAEAE;
+}
+
+
 .login-screen button {
-    width: 109px;
-    height: 45px;
+    min-width: 109px;
+    min-height: 45px;
     background: #E7E7E7;
     border-radius: 9px;
     margin-top: 20px;
     border: none;
     color: #696969;
 }
+
+
+.error {
+    width: 40vw;
+    line-height: 20px;
+    text-align: center;
+    color: rgb(196, 0, 0);
+    position: fixed;
+    top: 205px;
+    left: calc(50% - 20vw);
+    z-index: 2;
+}
+
+.loading {
+    width: 375px;
+    height: 100vh;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: calc(50% - 187.5px);
+    z-index: 3;
+}
+
+.gif {
+    width: 120px;
+    margin-top: 50px;
+    margin-bottom: 5px;
+}
+
+.habilitado {
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
 
 @media (max-width: 450px){
     header, footer, .chat, .container, .login-screen{

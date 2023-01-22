@@ -15,93 +15,115 @@
 </head>
 <body>
 
+    
+
+    <div class="login-screen">
+        <img class="logo" src="./img/bate-papo.png" alt="Logo">
+        <input onclick="resetInput(this);" oninput="ativarBotao(this);" type="text" placeholder="Digite o seu nome" autocomplete="off">
+        <button class="login-Button" onclick="logar();" disabled> Entrar </button>
+    </div>
+
+    <span class="error hidden">  </span>
+
+    <div class="loading hidden">
+        <img class="logo" src="./img/bate-papo.png" alt="Logo">
+        <img class="gif" src="./img/carregando.gif">
+        <p> Entrando... </p>
+    </div>
+
     <div class="container">
 
         <header>
             <img src="./img/bate-papo.png">
-            <ion-icon name="people"></ion-icon>
+            <ion-icon onclick="abrirSidebar()" name="people"></ion-icon>
         </header>
 
-        <div class="chat">
-            <div class="log"> 
-                <p class="time"> (09:21:45) </p>
-                <p class="author"> João </p>
-                <p class="message-text"> entra na sala... </p>
-            </div> 
-            <div class="public message"> 
-                <p class="time"> (09:22:28) </p> 
-                <p class="author"> João </p>
-                <p> para </p>
-                <p class="receiver">Todos</p>
-                : 
-                <p class="message-text"> Bom dia </p> 
-            </div> 
-            <div class="public message"> 
-                <p class="time"> (09:22:38) </p> 
-                <p class="author"> Maria </p>  
-                <p> para </p>
-                <p class="receiver"> João </p>
-                : 
-                <p class="message-text"> Oi João :) </p> 
-            </div> 
-            <div class="private message"> 
-                <p class="time"> (09:22:48) </p> 
-                <p class="author"> João </p>  
-                <p> reservadamente </p>
-                <p> para </p>
-                <p class="receiver"> Maria </p>
-                : 
-                <p class="message-text"> Oi gatinha quer tc? </p>
-            </div>
-            <div class="log"> 
-                <p class="time"> (09:22:58) </p>
-                <p class="author"> Maria </p>
-                <p class="message-text"> sai da sala... </p>
-            </div>   
-        </div>
+        <ul class="chat">
+<!--
+            <li class="log"> 
+                <p> <span class="time">(09:21:45)</span>
+                <span class="author">João</span>
+                <span class="message-text">entra na sala...</span></p>
+            </li> 
+            <li class="public message"> 
+                <p> <span class="time">(09:22:28)</span> 
+                <span class="author">João</span>
+                para
+                <span class="receiver">Todos</span>: 
+                <span class="message-text">Bom dia</span></p>
+            </li> 
+            <li class="public message"> 
+                <p> <span class="time">(09:22:38)</span> 
+                <span class="author">Maria</span>  
+                para
+                <span class="receiver">João</span>: 
+                <span class="message-text">Oi João :)</span></p>
+            </li> 
+            <li class="private message"> 
+                <p> <span class="time">(09:22:48)</span> 
+                <span class="author">João</span>  
+                <span class="privately">reservadamente</span>
+                para
+                <span class="receiver">Maria</span>: 
+                <span class="message-text">Oi gatinha quer tc?</span></p>
+            </li>
+            <li class="log"> 
+                <p> <span class="time">(09:22:58)</span>
+                <span class="author">Maria</span>
+                <span class="message-text">sai da sala...</span></p>
+            </li>   
+-->
+        </ul>
 
-        <aside class="users-list">
+        <aside class="users-list hidden">
+
             <div class="titulo">    
                 <h2> Escolha um contato para enviar mensagem: </h2>
             </div>   
-            <div class="user-message"> 
-                <div>
-                    <ion-icon name="people"></ion-icon>
-                    <p> Todos </p>
-                </div>
-                <img src="./img/checkmark.png" alt="Checkmark">
-            </div>
-            <div class="user-message"> 
-                <div>
-                    <ion-icon name="person-circle"></ion-icon>
-                    <p> João </p>
-                </div>
-                <img src="./img/checkmark.png" alt="Checkmark">
-            </div>
-            <div class="user-message"> 
-                <div>
-                    <ion-icon name="person-circle"></ion-icon>
-                    <p> Maria </p>
-                </div>
-                <img src="./img/checkmark.png" alt="Checkmark">
-            </div>
+            <ul>
+                <li class="user-message"> 
+                    <div>
+                        <ion-icon name="people"></ion-icon>
+                        <p> Todos </p>
+                    </div>
+                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
+                </li>
+                <li class="user-message"> 
+                    <div>
+                        <ion-icon name="person-circle"></ion-icon>
+                        <p> João </p>
+                    </div>
+                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
+                </li>
+                <li class="user-message"> 
+                    <div>
+                        <ion-icon name="person-circle"></ion-icon>
+                        <p> Maria </p>
+                    </div>
+                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
+                </li>
+            </ul>
+
             <div class="subtitulo">
                 <h2> Escolha a visibilidade </h2>
             </div>
-            <div class="privacy"> 
-                <div>
-                    <ion-icon name="lock-open"></ion-icon>
-                    <p> Público </p>
-                </div>
-                <img src="./img/checkmark.png" alt="Checkmark">
-            </div>
-            <div class="privacy"> 
-                <div>
-                    <ion-icon name="lock-closed"></ion-icon>
-                    <p> Reservadamente </p>
-                </div>
-                <img src="./img/checkmark.png" alt="Checkmark">
-            </div>    
+
+            <ul>
+                <li class="privacy"> 
+                    <div>
+                        <ion-icon name="lock-open"></ion-icon>
+                        <p> Público </p>
+                    </div>
+                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
+                </li>
+                <li class="privacy"> 
+                    <div>
+                        <ion-icon name="lock-closed"></ion-icon>
+                        <p> Reservadamente </p>
+                    </div>
+                    <img src="./img/checkmark.png" alt="Checkmark" hidden>
+                </li>    
+            </ul>
         </aside> 
 
         <footer>
@@ -109,19 +131,14 @@
                 <input type="text" placeholder="Escreva aqui...">
                 <p> Enviando para <span class="receiver-selected"> Maria </span> (<span class="privacy-selected">reservadamente</span>)</p>
             </div>
-            <ion-icon name="paper-plane-outline"></ion-icon>      
+            <ion-icon class="botaoEnviar" name="paper-plane-outline"></ion-icon>      
         </footer>
 
     </div>    
-
-    <div class="login-screen">
-        <img src="./img/bate-papo.png" alt="Logo">
-        <input type="text" placeholder="Digite o seu nome">
-        <button> Entrar </button>
-    </div>
-    
+   
    
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./script/script.js"></script>
 </body>
 </html>
