@@ -58,6 +58,11 @@ header ion-icon {
     min-height: 40px;
     margin-bottom: 5px;
     padding: 10px 8px 10px 8px;
+    word-break: break-word;
+}
+
+.chat li:last-child{
+    height: 3px;
 }
 
 .chat p {
@@ -155,6 +160,7 @@ footer ion-icon {
     z-index: 3;
     overflow-y: scroll;
     padding-bottom: 80px;
+    word-break: break-word;
 }
 
 .back-aside {

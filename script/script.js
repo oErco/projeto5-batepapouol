@@ -1,11 +1,12 @@
-let botaoAtivo = document.querySelector(".login-Button");
-let inputAtivo = document.querySelector(".login-screen input");
-const mensagem = document.querySelector(".error");
+let botaoAtivo = document.querySelector(".botaoEnviar");
+let inputAtivo = document.querySelector(".message-input input");
+const mensagemErro = document.querySelector(".error");
 let nome; 
 let usuarios = ["Todos"];
 let privacidade = "message";
 let destinatario = "Todos";
 let textoPrivacidade ="";
+let usersOnline = ["Todos"];
 
 configuraTextoPrivacidade();
 document.addEventListener("keypress", clicaEnter);
@@ -31,23 +32,22 @@ function ativarBotao(input){
     botao.style.backgroundColor = "#E7E7E7";
     botao.style.color = "#696969";
     botao.classList.remove("habilitado");
+    botao.disabled = true;
   }
 }
 function logar(){
-  nome = document.querySelector("input").value;
+  nome = document.querySelector(".login-screen input").value;
   let usuario = {name: nome};
   const loading = document.querySelector(".loading");
   loading.classList.remove("hidden");
   setTimeout(function(){document.querySelector(".loading").classList.add("hidden");}, 2000);
-  //const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
-  //promessa.then(validarNome);
   const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', usuario);
   promessa.then(entrarNaSala);
   promessa.catch(erroLogin);
 }
 function entrarNaSala(resposta){
   document.querySelector("footer input").value = "";
-  mensagem.classList.add("hidden");
+  mensagemErro.classList.add("hidden");
   document.querySelector(".login-screen").classList.add("hidden");
   botaoAtivo = document.querySelector(".botaoEnviar");
   inputAtivo = document.querySelector(".message-input input");
@@ -64,8 +64,8 @@ function carregarMensagens(){
 function exibirMensagens(resposta){
   const listaMensagens = resposta.data;
   const chat = document.querySelector(".chat");
-  chat.innerHTML = "";
   let mensagem;
+  chat.innerHTML = "";  
   for (let i = 0; i < listaMensagens.length; i++){
     if (listaMensagens[i].type === "status"){
       mensagem = `<li data-test="message" class="log"> 
@@ -97,17 +97,20 @@ function exibirMensagens(resposta){
       chat.innerHTML = chat.innerHTML + mensagem;
     }    
   }
-  document.querySelector(".chat").scrollIntoView(false);
+  chat.innerHTML = chat.innerHTML + `<div class="final"> </div>`;
+  document.querySelector(".final").scrollIntoView(false);
 }
 function manterConexao(){
   let usuario = {name: nome};
   const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', usuario);
+  promessa.then(taOn);
+  promessa.catch(taOff);
 }
 function erroLogin(erro){
   if (erro.response.status === 400){
     document.querySelector(".login-screen input").style.backgroundColor = "rgb(255, 216, 216)";
-    mensagem.innerHTML = `O nome ${nome} já está em uso! <br> Por favor digite outro nome`;
-    mensagem.classList.remove("hidden");
+    mensagemErro.innerHTML = `O nome ${nome} já está em uso! <br> Por favor digite outro nome`;
+    mensagemErro.classList.remove("hidden");
   }
 }
 function abrirSidebar(){
@@ -150,9 +153,6 @@ function verificarUsuarios(resposta){
 function mostrarParticipantes(){
   const listaUsers = document.querySelector(".users");
   let mensagem;
-  // Verifica se elemento.nome é igual a destinatario 
-  // Se sim renderiza com img sem o hidden
-  // Se não resnderiza com o img hidden
   listaUsers.innerHTML = "";
 
   for (let i = 0; i < usuarios.length; i++){
@@ -239,8 +239,7 @@ function escolheDestinatario(escolha){
   configuraTextoPrivacidade();
 }
 function configuraTextoPrivacidade(){
-  let configMensagem = document.querySelector(".message-input p");
-
+  let configMensagem = document.querySelector(".caixa-mensagem");
   if (privacidade === "message"){
     textoPrivacidade = "publicamente";
   }
@@ -250,20 +249,49 @@ function configuraTextoPrivacidade(){
   configMensagem.innerHTML = `<p>Enviando para <span class="receiver-selected"> ${destinatario} </span> (<span class="privacy-selected">${textoPrivacidade}</span>)</p>`;
 }
 function enviarMensagem(){
-  let texto = document.querySelector(".message-input input");
 
-  if (texto.value.length > 0){
-    let mensagem = {from: nome, to: destinatario, text: texto.value, type: privacidade};
-    console.log(mensagem);
-    let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
+  const texto = document.querySelector(".message-input input");
+  verificaUsersOnline();
+  console.log(destinatario.toLowerCase().trim());
+  let elemento = usersOnline.find(elemento => elemento.toLowerCase().trim() === destinatario.toLowerCase().trim());
+  if (elemento !== undefined){
+    const mensagem = {from: nome, to: destinatario, text: texto.value, type: privacidade};
+    const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
     texto.value = "";
     promessa.then(carregarMensagens);
-    promessa.catch(erroMensagem);
+    promessa.catch(erroMensagem); 
   }  
+  else {
+    document.querySelector(".login-screen input").value = ""
+    document.querySelector(".login-Button").classList.remove("habilitado");
+    document.querySelector(".login-Button").disabled = true;
+    window.location.reload();
+  }
+}
+function verificaUsersOnline (){
+  const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+  promessa.then(listaOnline);
+}
+function listaOnline(resposta) {
+  usersOnline = ["Todos"];
+  for (let i = 0; i < resposta.data.length; i++){
+    usersOnline.push(resposta.data[i].name);
+  }
+    
 }
 function erroMensagem(resposta){
-  window.location.reload();
+  let botao = document.querySelector(".login-Button");
+  if (resposta.response.status === 400){
+    document.querySelector(".login-screen input").value = "";
+    botao.classList.remove("habilitado");
+    botao.disabled = true;
+    window.location.reload();
+  }  
+}
+function taOn(){
+  //console.log("Online");
+}
+function taOff(){
+  console.log("Offline");
 }
 
-  
-// Quebra de texto nas mensagens e nos usuários
