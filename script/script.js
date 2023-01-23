@@ -268,6 +268,7 @@ function enviarMensagem(){
     window.location.reload();
   }
 }
+
 function verificaUsersOnline (){
   const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
   promessa.then(listaOnline);
