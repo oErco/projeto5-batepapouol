@@ -257,7 +257,9 @@ function enviarMensagem(){
   /* let promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
   promessa.then(verificaDestinatarioOnline);
   promessa.catch(() => window.location.reload()); */
-  const mensagem = {from: nome, to: destinatario, text: 'alooo', type: privacidade};
+  const texto = document.querySelector(".message-input input");
+  let textoMensagem = texto.value;
+  const mensagem = {from: nome, to: destinatario, text: textoMensagem, type: privacidade};
   let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
   promessa.then(carregarMensagens);
   promessa.catch(erroMensagem); 
