@@ -257,7 +257,10 @@ function enviarMensagem(){
   /* let promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
   promessa.then(verificaDestinatarioOnline);
   promessa.catch(() => window.location.reload()); */
-  verificaDestinatarioOnline()
+  const mensagem = 'aloooo';
+  let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
+  promessa.then(carregarMensagens);
+  promessa.catch(erroMensagem); 
 }
 function verificaDestinatarioOnline(resposta) {
   let usersOnline = ["Todos"];
