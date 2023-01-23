@@ -95,7 +95,7 @@ footer {
     bottom: 0;
 }
 
-footer p {
+.caixa-mensagem {
     color: #505050;
     font-size: 14px;
     margin: 10px 0 0 1px;
