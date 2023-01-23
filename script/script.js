@@ -1,14 +1,16 @@
-let botaoAtivo = document.querySelector(".botaoEnviar");
-let inputAtivo = document.querySelector(".message-input input");
+let botaoAtivo = document.querySelector(".login-Button");
+let inputAtivo = document.querySelector(".login-screen input");
 const mensagemErro = document.querySelector(".error");
 let nome; 
 let usuarios = ["Todos"];
 let privacidade = "message";
 let destinatario = "Todos";
 let textoPrivacidade ="";
-let usersOnline = ["Todos"];
 
 configuraTextoPrivacidade();
+
+// Se a tecla ENTER for clicada na página de login entra na sala do chat
+// Se a tecla ENTER for clicada na sala do chat envia a mensagem
 document.addEventListener("keypress", clicaEnter);
 
 function clicaEnter(tecla){
@@ -40,6 +42,8 @@ function logar(){
   let usuario = {name: nome};
   const loading = document.querySelector(".loading");
   loading.classList.remove("hidden");
+  botaoAtivo = document.querySelector(".botaoEnviar");
+  inputAtivo = document.querySelector(".message-input input");
   setTimeout(function(){document.querySelector(".loading").classList.add("hidden");}, 2000);
   const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', usuario);
   promessa.then(entrarNaSala);
@@ -104,14 +108,17 @@ function exibirMensagens(resposta){
 function manterConexao(){
   let usuario = {name: nome};
   const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', usuario);
-  promessa.then(taOn);
-  promessa.catch(taOff);
+  promessa.catch(() => window.location.reload());
+  //promessa.then(taOn);
+  //promessa.catch(taOff);
 }
 function erroLogin(erro){
   if (erro.response.status === 400){
     document.querySelector(".login-screen input").style.backgroundColor = "rgb(255, 216, 216)";
     mensagemErro.innerHTML = `O nome ${nome} já está em uso! <br> Por favor digite outro nome`;
     mensagemErro.classList.remove("hidden");
+    botaoAtivo = document.querySelector(".login-Button");
+    inputAtivo = document.querySelector(".login-screen input");
   }
 }
 function abrirSidebar(){
@@ -128,14 +135,12 @@ function carregarParticipantes (){
 function verificarUsuarios(resposta){
   const listaUsuariosServidor = resposta.data;
   const listaNomes = [];
-
-  // Compara a lista usuarios e os elementos (.name) de listaUsuariosServidor
-  // Se o elemento já existe em usuários, não faz nada
-  // Se o elemento não existe em usuários, acrescenta no final da lista
+  let jaExiste;
+  let userOnline;
 
   for (let i = 0; i < listaUsuariosServidor.length; i++){
     listaNomes.push(listaUsuariosServidor[i].name);
-    const jaExiste = usuarios.find(elemento => elemento.toLowerCase() === listaUsuariosServidor[i].name.toLowerCase());
+    jaExiste = usuarios.find(elemento => elemento.toLowerCase() === listaUsuariosServidor[i].name.toLowerCase());
     if (jaExiste === undefined){
       usuarios.push(listaUsuariosServidor[i].name);
     }
@@ -143,12 +148,11 @@ function verificarUsuarios(resposta){
 
   // Remover os elementos de usuários que não estão na lista atual de nome (listaNomes)
   for (let i = 0; i < usuarios.length; i++){
-    const userOnline = listaNomes.find(elemento => elemento.toLowerCase() === usuarios[i].toLowerCase());
+    userOnline = listaNomes.find(elemento => elemento.toLowerCase() === usuarios[i].toLowerCase());
     if (userOnline === undefined && usuarios[i] !== "Todos"){
       usuarios.splice(i, 1);
     }
   }
-
   mostrarParticipantes();
 }
 function mostrarParticipantes(){
@@ -250,37 +254,26 @@ function configuraTextoPrivacidade(){
   configMensagem.innerHTML = `<p>Enviando para <span class="receiver-selected"> ${destinatario} </span> (<span class="privacy-selected">${textoPrivacidade}</span>)</p>`;
 }
 function enviarMensagem(){
-
+  let promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+  promessa.then(verificaDestinatarioOnline);
+  promessa.catch(() => window.location.reload());
+}
+function verificaDestinatarioOnline(resposta) {
+  let usersOnline = ["Todos"];
   const texto = document.querySelector(".message-input input");
   let textoMensagem = texto.value;
-  typeof(textoMensagem);
-  console.log(textoMensagem);
-  verificaUsersOnline();
-  let elemento = usersOnline.find(elemento => elemento.toLowerCase().trim() === destinatario.toLowerCase().trim());
-  if (elemento !== undefined){
-    const mensagem = {from: nome, to: destinatario, text: textoMensagem, type: privacidade};
-    const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
-    texto.value = "";
-    promessa.then(carregarMensagens);
-    promessa.catch(erroMensagem); 
-  }  
-  else {
-    document.querySelector(".login-screen input").value = ""
-    document.querySelector(".login-Button").classList.remove("habilitado");
-    document.querySelector(".login-Button").disabled = true;
-    window.location.reload();
-  }
-}
-function verificaUsersOnline (){
-  const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
-  promessa.then(listaOnline);
-}
-function listaOnline(resposta) {
-  usersOnline = ["Todos"];
+  let mensagem;
+  mensagem = {from: nome, to: destinatario, text: textoMensagem, type: privacidade};
+  texto.value = "";
   for (let i = 0; i < resposta.data.length; i++){
     usersOnline.push(resposta.data[i].name);
   }
-    
+  let elemento = usersOnline.find(elemento => elemento.toLowerCase().trim() === destinatario.toLowerCase().trim());
+  if (elemento !== undefined){    
+    let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
+    promessa.then(carregarMensagens);
+    promessa.catch(erroMensagem); 
+  }  
 }
 function erroMensagem(resposta){
   let botao = document.querySelector(".login-Button");
@@ -291,19 +284,4 @@ function erroMensagem(resposta){
     window.location.reload();
   }  
   window.location.reload();
-}
-function taOn(){
-  //console.log("Online");
-}
-function taOff(){
-  console.log("Offline");
-}
-
-function enviarMensagemAlternativa (){
-  let texto = document.querySelector(".message-input input").value;
-  let mensagem = {from: nome, to: destinatario, text: texto, type: privacidade};
-  let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
-  texto.value = "";
-  promessa.then(carregarMensagens);
-  promessa.catch(erroMensagem); 
 }
