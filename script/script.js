@@ -268,15 +268,15 @@ function verificaDestinatarioOnline(resposta) {
   for (let i = 0; i < resposta.data.length; i++){
     usersOnline.push(resposta.data[i].name);
   }
-  let elemento = usersOnline.find(elemento => elemento.toLowerCase().trim() === destinatario.toLowerCase().trim());
-  if (elemento !== undefined){    
+/*   let elemento = usersOnline.find(elemento => elemento.toLowerCase().trim() === destinatario.toLowerCase().trim());
+  if (elemento !== undefined){     */
     let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
     promessa.then(carregarMensagens);
     promessa.catch(erroMensagem); 
-  }  
+/*   }  
   else {
     window.location.reload();
-  }
+  } */
 }
 function erroMensagem(resposta){
   let botao = document.querySelector(".login-Button");
