@@ -274,6 +274,9 @@ function verificaDestinatarioOnline(resposta) {
     promessa.then(carregarMensagens);
     promessa.catch(erroMensagem); 
   }  
+  else {
+    window.location.reload();
+  }
 }
 function erroMensagem(resposta){
   let botao = document.querySelector(".login-Button");

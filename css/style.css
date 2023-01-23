@@ -318,10 +318,6 @@ li div {
     display: none;
 }
 
-
-
-
-
 @media (max-width: 450px){
     header, footer, .chat, .container, .login-screen, .back-aside {
         width: 100%;
@@ -332,6 +328,9 @@ li div {
     }
     .users-list {
         right: 0;
+    }
+    .final {
+        height: 5px;
     }
 }
 
