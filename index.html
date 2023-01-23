@@ -25,14 +25,14 @@
 
     <div class="loading hidden">
         <img class="logo" src="./img/bate-papo.png" alt="Logo">
-        <img class="gif" src="./img/carregando.gif">
+        <img class="gif" src="./img/carregando.gif" alt="">
         <p> Entrando... </p>
     </div>
 
     <div class="container">
 
         <header>
-            <img src="./img/bate-papo.png">
+            <img src="./img/bate-papo.png" alt="">
             <button data-test="open-participants" onclick="abrirSidebar()" class="botaoUsuarios">
                 <ion-icon name="people"></ion-icon>
             </button>
@@ -84,15 +84,13 @@
                 <input data-test="input-message" type="text" placeholder="Escreva aqui...">
                 <div data-test="recipient" class="caixa-mensagem"> </div>
             </div>
-            <button data-test="send-message" class="botaoEnviar" onclick="enviarMensagem();">
+            <button data-test="send-message" class="botaoEnviar" onclick="enviarMensagemAlternativa();">
                 <ion-icon name="paper-plane-outline" ></ion-icon>
             </button>                  
         </footer>
 
     </div>    
    
-   
-    <!-- <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script> -->
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
 

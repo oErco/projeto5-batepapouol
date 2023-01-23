@@ -52,7 +52,6 @@ header ion-icon {
 
 .chat li {
     display: flex;
-    display: flex;
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;

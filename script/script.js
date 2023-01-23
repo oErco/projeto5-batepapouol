@@ -51,15 +51,16 @@ function entrarNaSala(resposta){
   document.querySelector(".login-screen").classList.add("hidden");
   botaoAtivo = document.querySelector(".botaoEnviar");
   inputAtivo = document.querySelector(".message-input input");
-  const pararMensagens = setInterval(carregarMensagens, 3000);
-  const deslogar = setInterval(manterConexao, 5000);
+  setInterval(carregarMensagens, 3000);
+  setInterval(manterConexao, 5000);
   setInterval(carregarParticipantes, 10000);
   carregarMensagens();
   carregarParticipantes();
 }
-function carregarMensagens(){
+function carregarMensagens(resposta){
   const promesssa = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
   promesssa.then(exibirMensagens); 
+  promesssa.catch(erroMensagem);
 }
 function exibirMensagens(resposta){
   const listaMensagens = resposta.data;
@@ -251,11 +252,13 @@ function configuraTextoPrivacidade(){
 function enviarMensagem(){
 
   const texto = document.querySelector(".message-input input");
+  let textoMensagem = texto.value;
+  typeof(textoMensagem);
+  console.log(textoMensagem);
   verificaUsersOnline();
-  console.log(destinatario.toLowerCase().trim());
   let elemento = usersOnline.find(elemento => elemento.toLowerCase().trim() === destinatario.toLowerCase().trim());
   if (elemento !== undefined){
-    const mensagem = {from: nome, to: destinatario, text: texto.value, type: privacidade};
+    const mensagem = {from: nome, to: destinatario, text: textoMensagem, type: privacidade};
     const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
     texto.value = "";
     promessa.then(carregarMensagens);
@@ -268,7 +271,6 @@ function enviarMensagem(){
     window.location.reload();
   }
 }
-
 function verificaUsersOnline (){
   const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
   promessa.then(listaOnline);
@@ -288,6 +290,7 @@ function erroMensagem(resposta){
     botao.disabled = true;
     window.location.reload();
   }  
+  window.location.reload();
 }
 function taOn(){
   //console.log("Online");
@@ -296,3 +299,11 @@ function taOff(){
   console.log("Offline");
 }
 
+function enviarMensagemAlternativa (){
+  let texto = document.querySelector(".message-input input").value;
+  let mensagem = {from: nome, to: destinatario, text: texto, type: privacidade};
+  let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
+  texto.value = "";
+  promessa.then(carregarMensagens);
+  promessa.catch(erroMensagem); 
+}
