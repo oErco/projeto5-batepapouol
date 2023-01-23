@@ -251,11 +251,15 @@ function configuraTextoPrivacidade(){
 }
 function enviarMensagem(){
   let texto = document.querySelector(".message-input input");
-  let mensagem = {from: nome, to: destinatario, text: texto.value, type: privacidade};
-  let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
-  texto.value = "";
-  promessa.then(carregarMensagens);
-  promessa.catch(erroMensagem);
+
+  if (texto.value.length > 0){
+    let mensagem = {from: nome, to: destinatario, text: texto.value, type: privacidade};
+    console.log(mensagem);
+    let promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', mensagem);
+    texto.value = "";
+    promessa.then(carregarMensagens);
+    promessa.catch(erroMensagem);
+  }  
 }
 function erroMensagem(resposta){
   window.location.reload();
