@@ -164,7 +164,7 @@ function mostrarParticipantes(){
                           <ion-icon name="people"></ion-icon>
                           <p> Todos </p>
                       </div>
-                      <img data-test="check" src="./img/checkmark.png" alt="Checkmark">
+                      <ion-icon data-test="check" name="checkmark-sharp"></ion-icon>
                     </li>`;
       }
       else {
@@ -173,7 +173,7 @@ function mostrarParticipantes(){
                         <ion-icon name="person-circle"></ion-icon>
                         <p> ${usuarios[i]} </p>
                     </div>
-                    <img data-test="check" src="./img/checkmark.png" alt="Checkmark">
+                    <ion-icon data-test="check" name="checkmark-sharp"></ion-icon>
                   </li>`;
       }
     }
@@ -185,9 +185,9 @@ function mostrarParticipantes(){
                       <div>
                           <ion-icon name="people"></ion-icon>
                           <p> Todos </p>
-                      </div>
-                      <img data-test="check" src="./img/checkmark.png" alt="Checkmark" class="hidden">
-                    </li>`;
+                      </div>                      
+                      <ion-icon data-test="check" name="checkmark-sharp" class="hidden"></ion-icon>
+                      </li>`;
       }
       else {
         mensagem = `<li data-test="participant" class="user-message" onclick="escolheDestinatario(this);"> 
@@ -195,7 +195,7 @@ function mostrarParticipantes(){
                           <ion-icon name="person-circle"></ion-icon>
                           <p> ${usuarios[i]} </p>
                       </div>
-                      <img data-test="check" src="./img/checkmark.png" alt="Checkmark" class="hidden">
+                      <ion-icon data-test="check" name="checkmark-sharp" class="hidden"></ion-icon>
                     </li>`;
       }
     }
@@ -206,13 +206,13 @@ function mostrarParticipantes(){
 function statusPrivacidade(escolha){
   if (escolha.classList.contains("publica")){
     privacidade = "message";
-    document.querySelector(".privada img").classList.add("hidden");
-    document.querySelector(".publica img").classList.remove("hidden");
+    document.querySelector(".privada ion-icon:last-child").classList.add("hidden");
+    document.querySelector(".publica ion-icon:last-child").classList.remove("hidden");
   }
   else if (escolha.classList.contains("privada") && destinatario.toLowerCase().trim() !== "todos"){
     privacidade = "private_message";
-    document.querySelector(".publica img").classList.add("hidden");
-    document.querySelector(".privada img").classList.remove("hidden"); 
+    document.querySelector(".publica ion-icon:last-child").classList.add("hidden");
+    document.querySelector(".privada ion-icon:last-child").classList.remove("hidden"); 
   }
   configuraTextoPrivacidade();
 }
@@ -232,8 +232,8 @@ function escolheDestinatario(escolha){
   if (destinatario.toLowerCase().trim() === "todos"){
     //Muda privacidade para público
     privacidade = "message";
-    document.querySelector(".privada img").classList.add("hidden");
-    document.querySelector(".publica img").classList.remove("hidden");
+    document.querySelector(".privada ion-icon:last-child").classList.add("hidden");
+    document.querySelector(".publica ion-icon:last-child").classList.remove("hidden");
   }
 
   configuraTextoPrivacidade();

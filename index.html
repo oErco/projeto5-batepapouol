@@ -35,7 +35,9 @@
 
         <header>
             <img src="./img/bate-papo.png">
-            <ion-icon data-test="open-participants" onclick="abrirSidebar()" name="people"></ion-icon>
+            <button data-test="open-participants" onclick="abrirSidebar()" class="botaoUsuarios">
+                <ion-icon name="people"></ion-icon>
+            </button>
         </header>
 
         <ul class="chat">
@@ -62,14 +64,14 @@
                             <ion-icon name="lock-open"></ion-icon>
                             <p> Público </p>
                         </div>
-                        <img data-test="check" src="./img/checkmark.png" alt="Checkmark">
+                        <ion-icon data-test="check" name="checkmark-sharp"></ion-icon>
                     </li>
                     <li data-test="private" class="privacy privada" onclick="statusPrivacidade(this);"> 
                         <div>
                             <ion-icon name="lock-closed"></ion-icon>
                             <p> Reservadamente </p>
                         </div>
-                        <img data-test="check" class="hidden" src="./img/checkmark.png" alt="Checkmark">
+                        <ion-icon data-test="check" name="checkmark-sharp" class="hidden"></ion-icon>
                     </li>    
                 </ul>    
             </div>             
@@ -84,7 +86,10 @@
                 <input data-test="input-message" type="text" placeholder="Escreva aqui...">
                 <p data-test="recipient"> </p>
             </div>
-            <ion-icon data-test="send-message" class="botaoEnviar" name="paper-plane-outline" onclick="enviarMensagem();"></ion-icon>      
+            <button data-test="send-message" class="botaoEnviar" onclick="enviarMensagem();">
+                <ion-icon name="paper-plane-outline" ></ion-icon>
+            </button>
+                  
         </footer>
 
     </div>    

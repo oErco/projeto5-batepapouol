@@ -122,10 +122,22 @@ footer ion-icon {
     width: calc(95% - 26px);
 }
 
+.botaoEnviar, .botaoUsuarios {
+    background: none;
+    border: none;
+}
+
+
 .users-list img {
     width: 10px;
     height: 10px;
     margin-left: 10px;
+}
+
+
+.user-message ion-icon:last-child, .privacy ion-icon:last-child{
+    color: green;
+    font-size: 20px;
 }
 
 .front-aside {
@@ -202,7 +214,6 @@ li div {
     align-items: center;
     margin-top: 20px;
 }
-
 
 .privacy ion-icon {
     font-size: 20px;
